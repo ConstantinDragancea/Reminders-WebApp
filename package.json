@@ -1,0 +1,24 @@
+{
+  "name": "timemanagement",
+  "version": "1.0.0",
+  "description": "A simple WebApp for setting up reminders",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "timemanagement",
+    "time",
+    "management"
+  ],
+  "author": "Constantin Dragancea",
+  "license": "MIT License",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "morgan": "^1.10.0",
+    "uuid": "^7.0.3"
+  }
+}
