@@ -8,16 +8,20 @@ header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    padding: 15px 10%;
+    padding: 10px 10%;
     background-color: #24252a;
 }
   
 .logo {
     margin-right: auto;
 }
+a.logo{
+    text-decoration: none;
+}
 
-.logo img{
-    height: 20%;
+a.logo h1{
+    font-family: 'Orbitron', sans-serif;
+    color: white;
 }
   
 .nav__links {
