@@ -1,0 +1,278 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* NAVBAR SETTINGS */
+
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 10%;
+    background-color: #24252a;
+}
+  
+.logo {
+    margin-right: auto;
+}
+a.logo{
+    text-decoration: none;
+}
+
+a.logo h1{
+    font-family: 'Orbitron', sans-serif;
+    color: rgb(233, 233, 233);
+}
+  
+.nav__links {
+    list-style: none;
+    display: flex;
+}
+  
+.nav__links a,
+.cta,
+.overlay__content a {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 500;
+    color: #edf0f1;
+    text-decoration: none;
+}
+  
+.nav__links li {
+    padding: 0px 20px;
+}
+  
+.nav__links li a {
+    transition: all 0.3s ease 0s;
+}
+  
+.nav__links li a:hover {
+    color: #0088a9;
+}
+  
+.cta {
+    margin-left: 20px;
+    padding: 9px 25px;
+    background-color: rgba(0, 136, 169, 1);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease 0s;
+}
+  
+.cta:hover {
+    background-color: rgba(0, 136, 169, 0.8);
+}
+  
+  /* MOBILE NAVBAR SETTINGS */
+  
+.menu {
+    display: none;
+}
+  
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: #24252a;
+    overflow-x: hidden;
+    transition: all 0.5s ease 0s;
+}
+  
+.overlay__content {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+  
+.overlay a {
+    padding: 15px;
+    font-size: 36px;
+    display: block;
+    transition: all 0.3s ease 0s;
+}
+  
+.overlay a:hover,
+.overlay a:focus {
+    color: #0088a9;
+}
+.overlay .close {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+    color: #edf0f1;
+    cursor: pointer;
+}
+
+.body-layout {
+    display: grid;
+    height: 100%;
+    min-height: 100vh;
+    grid-template-columns: 100px auto 100px;
+    grid-template-rows: 80px 1fr 50px;
+    grid-template-areas:
+    ". header ."  
+    ". main ."
+    ". footer .";
+    background-color: #f1f3f4;
+}
+
+/* HEADER SETTINGS */
+
+.body-greeting {
+    grid-area: header;
+    display: flex;
+    align-self: center;
+}
+
+/* REMINDERS CARDS SETTINGS */
+
+.container-reminders {
+    grid-area: main;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    height: 100%;
+}
+
+/* FOOTER SETTINGS */
+.footer {
+    grid-area: footer;
+    text-align: center;
+}
+
+/* NOTE SETTINGS */
+.note-entry {
+    position: relative;
+    /* background-color: white; */
+    background-color: #f0ec05;
+    flex: 0 0 400px;
+    height: 350px;
+    margin: 1rem .25em;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+.note-entry hr{
+    border: 1px solid #f1f1f1;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+
+}
+
+.title p{
+    font-size: 25px;
+    margin: 10px auto;
+}
+
+.deadline {
+    width: 100%;
+    text-align: center;
+}
+
+.deadline p {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.description {
+    width: 100%;
+    padding: 0px 1em 1em 1em;
+    height: 60%;
+    overflow: hidden;
+}
+
+.description p {
+    font-size: 18px;
+}
+
+.done-button-wrapper {
+    width: 100%;
+    margin-top: 0.3em;
+}
+
+.done-button {
+    /* position: absolute; */
+    background-color: aqua;
+    border-radius: 10px;
+    width: fit-content;
+    padding: 0.6em;
+    margin: auto;
+}
+  
+@media screen and (max-width: 1280px) {
+    .body-layout{
+        grid-template-columns: 1em auto 1em;
+    }
+
+    /* NAVBAR SETTINGS */
+    .nav__links,
+    .cta {
+        display: none;
+    }
+    .menu {
+        display: initial;
+    }
+
+    /* BODY SETTINGS */
+    .body-layout {
+        grid-template-columns: 1em auto 1em;
+    }
+
+    .note-entry {
+        max-width: calc(50% - 1em);
+    }
+
+    .done-button {
+        padding: 0.45em;
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+    .body-layout{
+        grid-template-columns: 1em auto 1em;
+    }
+    .overlay a {
+        font-size: 20px;
+    }
+    .overlay .close {
+        font-size: 40px;
+        top: 15px;
+        right: 35px;
+    }
+
+    .note-entry {
+        max-width: calc(80%);
+    }
+
+    .title p{
+        font-size: 19px;
+    }
+
+    .deadline p {
+        font-size: 16px;
+    }
+
+    .description p {
+        font-size: 14px;
+    }
+
+    .done-button {
+        padding: 0.4em;
+    }
+
+}

@@ -5,13 +5,14 @@
     <meta name="description" content="Time Management Web App">
     <meta name="author" content="Dragancea Constantin">
     <title>Time Management</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/current_reminders.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
-    
-  <header class="header">
+  <!-- Navbar at the top -->
+  <div class="navbar">
     <a class="logo" href="#"><h1>Reminders</h1></a>
     <nav>
       <ul class="nav__links">
@@ -22,7 +23,9 @@
     </nav>
     <a class="cta" href="#">Log Out</a>
     <p onclick="openNav()" class="menu cta">Menu</p>
-  </header>
+  </div>
+
+  <!-- Mobile menu that comes from left -->
   <div id="mobile__menu" class="overlay">
     <a class="close" onclick="closeNav()">&times;</a>
     <div class="overlay__content">
@@ -32,6 +35,129 @@
       <a href="#">Log Out</a>
     </div>
   </div>
+
+  <div class="body-layout">
+
+    <header class="body-greeting">
+      <h2 id="greeting">Here are some future reminders:</h2>
+    </header>
+
+    <main id="reminders-view" class="container-reminders">
+
+      <div class="note-entry">
+
+        <h4 class="title">
+          Banane
+        </h4>
+        <h6 class="deadline">
+          16 iunie 2020 16:45
+        </h6>
+        <p class="description">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Iure unde ipsa totam, dolorem vel debitis laudantium, dolor 
+          neque pariatur non officiis, culpa harum voluptatem temporibus. 
+          Aspernatur iste recusandae quod rem.
+        </p>
+
+      </div>
+      <div class="note-entry">
+        <div class="title">
+          <p>Banane</p>
+        </div>
+        <div class="deadline">
+          <p>17 iunie 23:59</p>
+        </div>
+        <hr>
+        <div class="description">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Iure unde ipsa totam, dolorem vel debitis laudantium, dolor 
+            neque pariatur non officiis, culpa harum voluptatem temporibus. 
+            Aspernatur iste recusandae quod rem.
+          </p>
+        </div> 
+        <div class="done-button-wrapper">
+          <div class="done-button">
+            <p>Mark as Done</p>
+          </div>   
+        </div>          
+
+      </div>
+      <div class="note-entry">
+        <div class="title">
+          <p>Banane</p>
+        </div>
+        <div class="deadline">
+          <p>17 iunie 23:59</p>
+        </div>
+        <hr>
+        <div class="description">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Iure unde ipsa totam, dolorem vel debitis laudantium, dolor 
+            neque pariatur non officiis, culpa harum voluptatem temporibus. 
+            Aspernatur iste recusandae quod rem. Lorem, ipsum dolor sit amet 
+            consectetur adipisicing elit. Praesentium veritatis dolorum 
+            repudiandae facilis inventore? Sunt porro at ex impedit dicta in. 
+            Saepe facilis dignissimos vel quas nemo provident voluptate 
+            aspernatur.
+          </p>
+        </div> 
+        <div class="done-button-wrapper">
+          <div class="done-button">
+            <p>Mark as Done</p>
+          </div>   
+        </div>          
+
+      </div>
+      <div class="note-entry">
+        <div class="title">
+          <p>Banane</p>
+        </div>
+        <div class="deadline">
+          <p>17 iunie 23:59</p>
+        </div>
+        <hr>
+        <div class="description">
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+            Iure unde ipsa totam, dolorem vel debitis laudantium, dolor 
+            neque pariatur non officiis, culpa harum voluptatem temporibus. 
+            Aspernatur iste recusandae quod rem.
+          </p>
+        </div> 
+        <div class="done-button-wrapper">
+          <div class="done-button">
+            <p>Mark as Done</p>
+          </div>   
+        </div>          
+
+      </div>
+      <div class="note-entry">
+
+        <h4 class="title">
+          Banane
+        </h4>
+        <h6 class="deadline">
+          16 iunie 2020 16:45
+        </h6>
+        <p class="description">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+          Iure unde ipsa totam, dolorem vel debitis laudantium, dolor 
+          neque pariatur non officiis, culpa harum voluptatem temporibus. 
+          Aspernatur iste recusandae quod rem.
+        </p>
+
+      </div>
+
+    </main>
+
+    <footer class="footer">
+      <p>Copyright 2020 Constantin Dragancea</p>
+    </footer>
+
+  </div>
+
   <script type="text/javascript" src="js/navbar.js"></script>
 
 <!--
