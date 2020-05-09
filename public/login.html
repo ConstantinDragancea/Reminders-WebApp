@@ -17,8 +17,8 @@
     <div class="login">
       <h1>Login</h1>
         <form onsubmit="LOGIN_Attempt();return false">
-          <input class="login-input" type="text" name="u" placeholder="Username" required="required" />
-          <input class="login-input" type="password" name="p" placeholder="Password" required="required" />
+          <input id="username" class="login-input" type="text" name="u" placeholder="Username" required="required" />
+          <input id="password" class="login-input" type="password" name="p" placeholder="Password" required="required" />
           <button type="submit" class="btn btn-primary btn-block btn-large login-btn">Log in</button>
           <button class="btn btn-primary btn-block btn-large login-btn" onclick="GOTO_SignUp()">Register</button>
         </form>

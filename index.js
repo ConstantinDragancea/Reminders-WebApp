@@ -2,9 +2,13 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const port = 3000;
+const morgan = require('morgan')
 
 // Middleware
 app.use(express.static('public'));
+app.use(morgan('tiny'));
+app.use(express.json());
 
 // Possible server responses to attemps to log in / register
 
@@ -86,6 +90,24 @@ let active_user = { };
 
 app.post('/API/login', (req, res) => {
     let user = req.body;
+    let index_response = { };
+
+    // check if there is an existing token and that it is correct
+    if (user.hasOwnProperty('token')){
+        if (active_user.hasOwnProperty('token') && 
+            active_user['token'] === user['token']){
+                active_user['last_action'] = new Date();
+                index_response = successful_login;
+                index_response['id'] = active_user['id'];
+        }
+        else {
+            active_user = { };
+            index_response = failed_login;
+        }
+        res.end(JSON.stringify(index_response));
+    }
+
+
     const users = readJSONFile()['users'];
 
     let found = false;
@@ -95,16 +117,21 @@ app.post('/API/login', (req, res) => {
             user = users[i];
         }
     }
-    let server_response = { };
     if (found){
-        server_response = successful_login;
-        server_response.user_id = user.id;
-        server_response.token = CreateUniqueID();
+        index_response = successful_login;
+        index_response.user_id = user.id;
+        index_response.token = CreateUniqueID();
+
+        active_user = {
+            'token' : index_response.token,
+            'user' : user,
+            'last_action': new Date()
+        };
     }
     else {
-        server_response = failed_login;
+        index_response = failed_login;
     }
-    res.end(JSON.stringify(server_response));
+    res.end(JSON.stringify(index_response));
 })
 
 // CRUD API
@@ -113,7 +140,14 @@ app.post('/API/login', (req, res) => {
 
 
 // Read One
+app.get('/users/:id', (req, res) => {
+    let requestToken = req.params.id.substring(1);
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== requestToken){
+        res.end(JSON.stringify(failed_login));
+    }
 
+    res.end(JSON.stringify(active_user.user));
+})
 
 // Read All
 

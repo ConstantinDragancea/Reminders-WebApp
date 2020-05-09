@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="css/current_reminders.css">
     <link rel="stylesheet" href="css/login-screen.css">
+    <link rel="shortcut icon" href="img/notes.png">
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
@@ -17,25 +18,18 @@
 </head>
 <body>
   <div id="everything">
-    <div id="login-screen">
-      <div class="login">
-        <h1>Register</h1>
-          <form onsubmit="SIGNUP_Attempt();return false">
-            <input class="login-input" type="text" name="n" placeholder="Enter your name" required="required" />
-            <input class="login-input" type="text" name="u" placeholder="Enter your username" required="required" />
-            <input class="login-input" type="password" name="p" placeholder="Enter your password" required="required" />
-            <input class="login-input" type="password" name="p2" placeholder="Enter your password again" required="required" />
-            <button type="submit" class="btn btn-primary btn-block btn-large login-btn">Register</button>
-            <button class="btn btn-primary btn-block btn-large login-btn" onclick="LOGIN_GoTo()">Log in</button>
-          </form>
-      </div>
-    </div>
+    
   </div>  
 
   <script src="js/navbar.js"></script>
   <script src="js/script.js"></script>
   <script src="js/sync.js"></script>
   <script src="js/login.js"></script>
+  <script src="js/menu.js"></script>
+  <script>
+    "use strict";
+    LOGIN_GoTo();
+  </script>
 
 </body>
 </html>
