@@ -6,6 +6,7 @@
     <meta name="author" content="Dragancea Constantin">
     <title>Time Management</title>
     <link rel="stylesheet" href="css/current_reminders.css">
+    <link rel="stylesheet" href="css/modal-style.css">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
@@ -79,8 +80,11 @@
         <div class="done-button-wrapper">
           <div class="done-button">
             <p>Mark as Done</p>
-          </div>   
-        </div>          
+          </div>
+          <div class="done-button" onclick="MENU_EditNote()">
+            <p>Edit Note</p>
+          </div>
+        </div>       
 
       </div>
       <div class="note-entry">
@@ -156,6 +160,26 @@
       <p>Copyright 2020 Constantin Dragancea</p>
     </footer>
 
+  </div>
+
+  <div class="modal-view-wrapper">
+    <div class="modal-view">
+      <form onsubmit="LOGIN_Attempt();return false">
+        <label for="note-title">Note Title:</label>
+        <input name="note-title" id="modal-title" type="text"><br>
+
+        <label for="note-deadline">Note Deadline:</label>
+        <input name="note-deadline" id="modal-deadline" type="datetime-local"><br>
+
+        <label for="note-description">Note description:</label>
+        <input name="note-description" id="modal-description" type="text"><br>
+
+        <button type="submit" class="btn btn-primary btn-block btn-large login-btn">Save</button>
+          <button class="btn btn-primary btn-block btn-large login-btn" onclick="SIGNUP_GoTo()">Discard</button>
+
+      </form>
+
+    </div>
   </div>
 
   <script type="text/javascript" src="js/navbar.js"></script>

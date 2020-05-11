@@ -7,11 +7,13 @@
             "password": "1234",
             "notes": [
                 {
+                    "note_id": "note_id0",
                     "title": "Banane",
                     "deadline": "May 7 2020 23:59",
                     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde ipsa totam, dolorem vel debitis laudantium, dolor neque pariatur non officiis, culpa harum voluptatem temporibus. Aspernatur iste recusandae quod rem."
                 },
                 {
+                    "note_id": "note_id1",
                     "title": "Fa curat",
                     "deadline": "May 17 2020 23:59",
                     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde ipsa totam, dolorem vel debitis laudantium, dolor neque pariatur non officiis, culpa harum voluptatem temporibus. Aspernatur iste recusandae quod rem."

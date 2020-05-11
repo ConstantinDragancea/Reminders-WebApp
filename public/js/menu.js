@@ -67,7 +67,13 @@ let create_note_html = (note) => {
     done_button_wrapper.innerHTML = 
     `<div class="done-button">
         <p>Mark as Done</p>
-    </div> `;
+    </div>
+    <div class="done-button" onclick="MENU_EditNote(`;
+    done_button_wrapper.innerHTML += note['note_id'];
+    done_button_wrapper.innerHTML += 
+    `)">
+      <p>Edit Note</p>
+    </div>`;
     note_entry.appendChild(done_button_wrapper);
 
     return note_entry;
@@ -100,4 +106,8 @@ let MENU_GoTo = () => {
             main.appendChild(create_note_html(note_list[i]));
     });
     
+}
+
+let MENU_EditNote = (id) => {
+  return;
 }
