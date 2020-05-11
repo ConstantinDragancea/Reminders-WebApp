@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Navbar at the top -->
@@ -164,19 +165,29 @@
 
   <div class="modal-view-wrapper">
     <div class="modal-view">
-      <form onsubmit="LOGIN_Attempt();return false">
-        <label for="note-title">Note Title:</label>
-        <input name="note-title" id="modal-title" type="text"><br>
-
-        <label for="note-deadline">Note Deadline:</label>
-        <input name="note-deadline" id="modal-deadline" type="datetime-local"><br>
-
-        <label for="note-description">Note description:</label>
-        <input name="note-description" id="modal-description" type="text"><br>
-
-        <button type="submit" class="btn btn-primary btn-block btn-large login-btn">Save</button>
-          <button class="btn btn-primary btn-block btn-large login-btn" onclick="SIGNUP_GoTo()">Discard</button>
-
+      <form id="modal-note-form" onsubmit="MENU_EditNote(); return false">
+        <h3>Insert note details</h3>
+        <fieldset>
+          <input class="modal-note-input" placeholder="Your name" type="text" tabindex="1" required autofocus>
+        </fieldset>
+        <fieldset>
+          <input class="modal-note-input" placeholder="Your Email Address" type="email" tabindex="2" required>
+        </fieldset>
+        <fieldset>
+          <input class="modal-note-input" placeholder="Your Phone Number (optional)" type="tel" tabindex="3" required>
+        </fieldset>
+        <fieldset>
+          <input class="modal-note-input" placeholder="Your Web Site (optional)" type="url" tabindex="4" required>
+        </fieldset>
+        <fieldset>
+          <textarea class="modal-note-input" placeholder="Type your message here...." tabindex="5" required></textarea>
+        </fieldset>
+        <fieldset>
+          <button class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
+        </fieldset>
+        <fieldset>
+          <button class="modal-note-input" onclick="" type="submit" id="modal-note-discard" data-submit="...Sending">Discard</button>
+        </fieldset>
       </form>
 
     </div>
