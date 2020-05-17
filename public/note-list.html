@@ -165,28 +165,22 @@
 
   <div class="modal-view-wrapper">
     <div class="modal-view">
-      <form id="modal-note-form" onsubmit="MENU_EditNote(); return false">
+      <form id="modal-note-form" class="modal-note-form" onsubmit="MENU_EditNote(); return false">
         <h3>Insert note details</h3>
         <fieldset>
-          <input class="modal-note-input" placeholder="Your name" type="text" tabindex="1" required autofocus>
+          <input class="modal-note-input" placeholder="Note Title" type="text" tabindex="1" required autofocus>
         </fieldset>
         <fieldset>
-          <input class="modal-note-input" placeholder="Your Email Address" type="email" tabindex="2" required>
+          <input class="modal-note-input modal" placeholder="Note Deadline" type="datetime-local" tabindex="2" required>
         </fieldset>
         <fieldset>
-          <input class="modal-note-input" placeholder="Your Phone Number (optional)" type="tel" tabindex="3" required>
-        </fieldset>
-        <fieldset>
-          <input class="modal-note-input" placeholder="Your Web Site (optional)" type="url" tabindex="4" required>
-        </fieldset>
-        <fieldset>
-          <textarea class="modal-note-input" placeholder="Type your message here...." tabindex="5" required></textarea>
+          <textarea class="modal-note-input" placeholder="Type your reminder here..." tabindex="5" required></textarea>
         </fieldset>
         <fieldset>
           <button class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
         </fieldset>
         <fieldset>
-          <button class="modal-note-input" onclick="" type="submit" id="modal-note-discard" data-submit="...Sending">Discard</button>
+          <button class="modal-note-input modal-note-discard" onclick="MENU_GoTo()" id="modal-note-discard" data-submit="...Sending">Discard</button>
         </fieldset>
       </form>
 

@@ -12,7 +12,7 @@ let SYNC_SignIn = (user) => {
     }).then(res => res.json())
     .then(res => {
 
-        if (res['successful']){
+        if (res.hasOwnProperty('successful') && res['successful']){
             window.localStorage.setItem('token', res.token);
             MENU_GoTo();
         }

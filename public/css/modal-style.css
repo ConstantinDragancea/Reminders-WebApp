@@ -14,7 +14,7 @@
 
 .modal-view {
     max-width: 1000px;
-    margin: 130px auto;
+    margin: 10vh auto;
     width: 100%;
     background-color: white;
 }
@@ -23,20 +23,20 @@
   font: 400 12px/16px "Roboto", Helvetica, Arial, sans-serif;
 }
 
-#modal-note-form {
+.modal-note-form {
   background: #F9F9F9;
   padding: 25px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-#modal-note-form h3 {
+.modal-note-form h3 {
   display: block;
   font-size: 30px;
   font-weight: 300;
   margin-bottom: 10px;
 }
 
-#modal-note-form h4 {
+.modal-note-form h4 {
   margin: 5px 0 15px;
   display: block;
   font-size: 13px;
@@ -51,11 +51,9 @@ fieldset {
   width: 100%;
 }
 
-#modal-note-form input[type="text"],
-#modal-note-form input[type="email"],
-#modal-note-form input[type="tel"],
-#modal-note-form input[type="url"],
-#modal-note-form textarea {
+.modal-note-form input[type="text"],
+.modal-note-form input[type="datetime-local"],
+.modal-note-form textarea {
   width: 100%;
   border: 1px solid #ccc;
   background: #FFF;
@@ -63,24 +61,22 @@ fieldset {
   padding: 10px;
 }
 
-#modal-note-form input[type="text"]:hover,
-#modal-note-form input[type="email"]:hover,
-#modal-note-form input[type="tel"]:hover,
-#modal-note-form input[type="url"]:hover,
-#modal-note-form textarea:hover {
+.modal-note-form input[type="text"]:hover,
+.modal-note-form input[type="datetime-local"]:hover,
+.modal-note-form textarea:hover {
   -webkit-transition: border-color 0.3s ease-in-out;
   -moz-transition: border-color 0.3s ease-in-out;
   transition: border-color 0.3s ease-in-out;
   border: 1px solid #aaa;
 }
 
-#modal-note-form textarea {
+.modal-note-form textarea {
   height: 100px;
   max-width: 100%;
   resize: none;
 }
 
-#modal-note-form button[type="submit"] {
+.modal-note-form button[type="submit"], .modal-note-discard {
   cursor: pointer;
   width: 100%;
   border: none;
@@ -91,19 +87,19 @@ fieldset {
   font-size: 15px;
 }
 
-#modal-note-form button[type="submit"]:hover {
+.modal-note-form button[type="submit"]:hover, .modal-note-discard {
   background: #036f8a;
   -webkit-transition: background 0.3s ease-in-out;
   -moz-transition: background 0.3s ease-in-out;
   transition: background-color 0.3s ease-in-out;
 }
 
-#modal-note-form button[type="submit"]:active {
+.modal-note-form button[type="submit"]:active {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-#modal-note-form input:focus,
-#modal-note-form textarea:focus {
+.modal-note-form input:focus,
+.modal-note-form textarea:focus {
   outline: 0;
   border: 1px solid #aaa;
 }

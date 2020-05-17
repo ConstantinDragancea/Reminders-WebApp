@@ -23,6 +23,20 @@ const failed_login = {
     'successful': false
 }
 
+const successful_operation = {
+    'successful' : true
+}
+
+const failed_operation = {
+    'successful': false
+}
+
+let current_time = () => {
+    let now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    return now;
+}
+
 // Useful functions
 
 let CreateUniqueID = () => {
@@ -45,15 +59,7 @@ let ValidUserName = str => {
     return true;    
 };
 
-let ReadUser = user => {
-    let user_data;
-    fetch('http://localhost:3000/users/' + user.id)
-        .then((res) => res.json())
-        .then((userFound) => {
-            user_data = userFound;
-        });
-    return user_data;
-}
+
 
 // Write an user to the database
 let WriteUser = user => {
@@ -105,6 +111,7 @@ app.post('/API/login', (req, res) => {
             index_response = failed_login;
         }
         res.end(JSON.stringify(index_response));
+        return;
     }
 
 
@@ -125,7 +132,7 @@ app.post('/API/login', (req, res) => {
         active_user = {
             'token' : index_response.token,
             'user' : user,
-            'last_action': new Date()
+            'last_action': current_time()
         };
     }
     else {
@@ -136,23 +143,103 @@ app.post('/API/login', (req, res) => {
 
 // CRUD API
 
-// CREATE
+// CREATE -----------------------------------
+app.post('/user/newnote', (req, res) => {
+    let reqToken = req.body.token;
+    let newNote = req.body.note;
 
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.end(JSON.stringify(failed_operation));
+        return;
+    }
 
-// Read One
+    active_user['user'].push(newNote);
+    
+    let db = readJSONFile();
+    for (let i = 0; i < db['users'].length; i++){
+        if (db['users'][i].id == active_user.user.id){
+            db['users'][i] = active_user.user;
+            break;
+        }
+    }
+
+    writeJSONFile(db);
+    res.end(JSON.stringify(successful_operation));
+})
+
+// Read One -----------------------------------
+let ReadUser = user => {
+    let user_data;
+    fetch('http://localhost:3000/users/' + user.id)
+        .then((res) => res.json())
+        .then((userFound) => {
+            user_data = userFound;
+        });
+    return user_data;
+}
+
+app.get('/user/note:id', (req, res) => {
+    let noteId = req.params.id.substring(1);
+    noteId = "note_id" + noteId;
+    let reqToken = req.body;
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.sendStatus(404);
+        return;
+    }
+
+    let userNotes = active_user['user']['notes'];
+    for (let i=0; i < userNotes.length; i++){
+        if (userNotes[i].noteId === noteId){
+            res.end(JSON.stringify(userNotes[i]));
+            return;
+        }
+    }
+    res.sendStatus(404);
+})
+
+// Read All --------------------------------
 app.get('/users/:id', (req, res) => {
     let requestToken = req.params.id.substring(1);
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== requestToken){
         res.end(JSON.stringify(failed_login));
+        return;
     }
 
     res.end(JSON.stringify(active_user.user));
 })
 
-// Read All
 
 // Update
 
+app.put('/user/editnote', (req, res) => {
+    let reqToken = req.body.token;
+    let newNote = req.body.note;
+
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.end(JSON.stringify(failed_operation));
+        return;
+    }
+
+    for (let i=0; i < active_user.user.notes.length; i++){
+        if (active_user.user.notes[i].note_id === newNote.note_id){
+            active_user.user.notes[i] = newNote;
+            break;
+        }
+    }
+    
+    let db = readJSONFile();
+    for (let i = 0; i < db['users'].length; i++){
+        if (db['users'][i].id == active_user.user.id){
+            db['users'][i] = active_user.user;
+            break;
+        }
+    }
+
+    writeJSONFile(db);
+
+    res.end(JSON.stringify(successful_operation));
+
+})
 
 // Delete
 
