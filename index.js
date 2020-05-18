@@ -148,12 +148,14 @@ app.post('/user/newnote', (req, res) => {
     let reqToken = req.body.token;
     let newNote = req.body.note;
 
+    newNote['note_id'] = CreateUniqueID();
+
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
         res.end(JSON.stringify(failed_operation));
         return;
     }
 
-    active_user['user'].push(newNote);
+    active_user['user'].notes.push(newNote);
     
     let db = readJSONFile();
     for (let i = 0; i < db['users'].length; i++){
@@ -243,6 +245,34 @@ app.put('/user/editnote', (req, res) => {
 
 // Delete
 
+app.delete('/user/deletenote', (req, res) => {
+    let reqToken = req.body.token;
+    let to_delete_id = req.body.note_id;
+
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.end(JSON.stringify(failed_operation));
+        return;
+    }
+
+    for (let i=0; i < active_user.user.notes.length; i++){
+        if (active_user.user.notes[i].note_id === to_delete_id){
+            active_user.user.notes.splice(i, 1);
+            break;
+        }
+    }
+
+    let db = readJSONFile();
+    for (let i = 0; i < db['users'].length; i++){
+        if (db['users'][i].id == active_user.user.id){
+            db['users'][i] = active_user.user;
+            break;
+        }
+    }
+
+    writeJSONFile(db);
+
+    res.end(JSON.stringify(successful_operation));
+})
 
 function readJSONFile() {
     return JSON.parse(fs.readFileSync('database.json'));

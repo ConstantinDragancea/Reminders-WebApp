@@ -76,7 +76,8 @@ fieldset {
   resize: none;
 }
 
-.modal-note-form button[type="submit"], .modal-note-discard {
+.modal-note-form button[type="submit"], .modal-note-discard,
+  .modal-note-delete {
   cursor: pointer;
   width: 100%;
   border: none;
@@ -87,7 +88,8 @@ fieldset {
   font-size: 15px;
 }
 
-.modal-note-form button[type="submit"]:hover, .modal-note-discard {
+.modal-note-form button[type="submit"]:hover,
+  .modal-note-discard, .modal-note-delete {
   background: #036f8a;
   -webkit-transition: background 0.3s ease-in-out;
   -moz-transition: background 0.3s ease-in-out;
