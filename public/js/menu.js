@@ -5,12 +5,12 @@ const MENU_html_code =
   <a class="logo" href="#"><h1>Reminders</h1></a>
   <nav>
     <ul class="nav__links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">History</a></li>
-      <li><a href="#">Pomodoro timer</a></li>
+      <li><a href="#" onclick="MENU_GoTo(); return false;">Home</a></li>
+      <li><a href="#" onclick="HISTORY_GoTo(); return false;">History</a></li>
+      <li><a href="#" onclick="MENU_MissedGoTo(); return false;">Missed reminders</a></li>
     </ul>
   </nav>
-  <a class="cta" href="#">Log Out</a>
+  <a class="cta" href="#" onclick="LogOut(); return false;" >Log Out</a>
   <p onclick="openNav()" class="menu cta">Menu</p>
 </div>
 
@@ -18,10 +18,10 @@ const MENU_html_code =
 <div id="mobile__menu" class="overlay">
   <a class="close" onclick="closeNav()">&times;</a>
   <div class="overlay__content">
-    <a href="#">Home</a>
-    <a href="#">History</a>
-    <a href="#">Pomodoro</a>
-    <a href="#">Log Out</a>
+    <a href="#" onclick="MENU_GoTo(); return false;">Home</a>
+    <a href="#" onclick="HISTORY_GoTo(); return false;">History</a>
+    <a href="#" onclick="MENU_MissedRemindersGoTo(); return false;" >Missed Reminders</a>
+    <a href="#" onclick="LogOut(); return false;" >Log Out</a>
   </div>
 </div>
 
@@ -57,17 +57,17 @@ let modal_html_code = (id) => {
       <fieldset>
         <button onclick="MENU_SaveNote('`
   str_ += id;
-  str_ += `')" class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
+  str_ += `'); return false;" class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
       </fieldset>
       <fieldset>
-        <button class="modal-note-input modal-note-discard" onclick="MENU_CloseModal()" id="modal-note-discard" data-submit="...Sending">Discard changes</button>
+        <button class="modal-note-input modal-note-discard" onclick="MENU_CloseModal(); return false;" id="modal-note-discard" data-submit="...Sending">Discard changes</button>
       </fieldset>`
 
   if (id != '-1') {
     str_ += `<fieldset>
         <button class="modal-note-input modal-note-delete" onclick="MENU_DeleteNote('`;
     str_ += id;
-    str_ += `')" id="modal-note-delete" data-submit="...Sending">Delete Note</button>
+    str_ += `'); return false;" id="modal-note-delete" data-submit="...Sending">Delete Note</button>
         </fieldset>`;
   }
   str_ += `</form>
@@ -76,6 +76,7 @@ let modal_html_code = (id) => {
 }
 
 let notes = [];
+let current_user = {};
 
 let create_note_html = (note) => {
   let note_entry = document.createElement('div');
@@ -104,12 +105,14 @@ let create_note_html = (note) => {
   let done_button_wrapper = document.createElement('div');
   done_button_wrapper.setAttribute('class', 'done-button-wrapper');
 
-  let aux_str = `<div class="done-button">
+  let aux_str = `<div class="done-button" onclick="MENU_MarkAsDone('`;
+  aux_str += note['note_id'];
+  aux_str += `'); return false;">
                 <p>Mark as Done</p>
             </div>
             <div class="done-button" onclick="MENU_EditNote('`;
   aux_str += note['note_id'];
-  aux_str += `')">
+  aux_str += `'); return false;">
           <p>Edit Note</p>
         </div>`;
 
@@ -121,8 +124,6 @@ let create_note_html = (note) => {
 }
 
 let MENU_GoTo = () => {
-
-  let current_user = {};
 
   fetch('http://localhost:3000/users/:' + window.localStorage.getItem('token'))
     .then(res => res.json())
@@ -164,7 +165,7 @@ let MENU_GoTo = () => {
 }
 
 
-let MENU_EditNote = (id) => {
+let MENU_EditNote = (id, isMissed = false) => {
 
   let modal_wrapper = document.createElement('div');
   modal_wrapper.setAttribute('class', 'modal-view-wrapper');
@@ -185,7 +186,12 @@ let MENU_EditNote = (id) => {
     }
 
     if (!found) {
-      MENU_GoTo();
+      if (isMissed == true){
+        MENU_MissedGoTo();
+      }
+      else{
+        MENU_GoTo();
+      }
       return;
     }
 
@@ -207,9 +213,13 @@ let MENU_SaveNote = (id) => {
   let req_body = {
     'token': window.localStorage.getItem('token')
   }
-  let new_note = {
-    'note_id': id
-  };
+
+  for (let i = 0; i < notes.length; i++) {
+    if (notes[i].note_id === id) {
+      new_note = notes[i];
+      break;
+    }
+  }
 
   let title_ = document.getElementById('modal-note-input-title');
   new_note['title'] = title_.value;
@@ -220,13 +230,15 @@ let MENU_SaveNote = (id) => {
   let description_ = document.getElementById('modal-note-input-description');
   new_note['description'] = description_.value;
 
-  new_note['done'] = false;
+  if (id == '-1') {
+    new_note['done'] = false;
+  }
 
   req_body['note'] = new_note;
 
   if (id != "-1") {
 
-    fetch('http://localhost:3000/user/editnote', {
+    fetch('user/editnote', {
       method: 'PUT',
       headers: {
         "Content-type": "application/json"
@@ -235,13 +247,21 @@ let MENU_SaveNote = (id) => {
     }).then(res => res.json())
       .then(res => {
         if (res.hasOwnProperty('successful') && res['successful']) {
-          MENU_GoTo();
+          if (new_note['done'] == false) {
+            console.log('entered the menu branch');
+            MENU_GoTo();
+          }
+          else {
+            HISTORY_GoTo();
+          }
         }
         else {
           window.localStorage.removeItem('token');
           LOGIN_GoTo();
         }
-      });
+      }).catch(err => {
+        console.log(err);
+      })
   }
   else {
     fetch('http://localhost:3000/user/newnote', {
@@ -294,4 +314,28 @@ let MENU_DeleteNote = (id) => {
         LOGIN_GoTo();
       }
     })
+}
+
+let MENU_MarkAsDone = (id) => {
+  let req_body = {
+    'token': window.localStorage.getItem('token'),
+    'note_id': id
+  }
+
+  fetch('http://localhost:3000/user/markasdonenote', {
+    method: 'PUT',
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(req_body)
+  }).then(res => res.json())
+    .then(res => {
+      if (res.hasOwnProperty('successful') && res['successful']) {
+        MENU_GoTo();
+      }
+      else {
+        window.localStorage.removeItem('token');
+        LOGIN_GoTo();
+      }
+    });
 }

@@ -239,6 +239,66 @@ app.put('/user/editnote', (req, res) => {
 
     writeJSONFile(db);
 
+    res.send(successful_operation);
+
+})
+
+app.put('/user/markasdonenote', (req, res) => {
+    let reqToken = req.body.token;
+    let newNote = req.body.note_id;
+
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.end(JSON.stringify(failed_operation));
+        return;
+    }
+
+    for (let i=0; i < active_user.user.notes.length; i++){
+        if (active_user.user.notes[i].note_id === newNote){
+            active_user.user.notes[i].done = true;
+            break;
+        }
+    }
+    
+    let db = readJSONFile();
+    for (let i = 0; i < db['users'].length; i++){
+        if (db['users'][i].id == active_user.user.id){
+            db['users'][i] = active_user.user;
+            break;
+        }
+    }
+
+    writeJSONFile(db);
+
+    res.end(JSON.stringify(successful_operation));
+
+})
+
+app.put('/user/markasundonenote', (req, res) => {
+    let reqToken = req.body.token;
+    let newNote = req.body.note_id;
+
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.end(JSON.stringify(failed_operation));
+        return;
+    }
+
+    for (let i=0; i < active_user.user.notes.length; i++){
+        if (active_user.user.notes[i].note_id === newNote){
+            active_user.user.notes[i].done = false;
+            break;
+        }
+    }
+    
+    let db = readJSONFile();
+    for (let i = 0; i < db['users'].length; i++){
+        if (db['users'][i].id == active_user.user.id){
+            db['users'][i] = active_user.user;
+            break;
+        }
+    }
+
+    writeJSONFile(db);
+
     res.end(JSON.stringify(successful_operation));
 
 })
