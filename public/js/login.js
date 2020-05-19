@@ -4,11 +4,11 @@ const LOGIN_html_code =
   `<div id="login-screen">
     <div class="login">
       <h1>Login</h1>
-        <form onsubmit="LOGIN_Attempt();return false">
+        <form>
           <input id="username" class="login-input" type="text" name="u" placeholder="Username" required="required" />
           <input id="password" class="login-input" type="password" name="p" placeholder="Password" required="required" />
-          <button type="submit" class="btn btn-primary btn-block btn-large login-btn">Log in</button>
-          <button class="btn btn-primary btn-block btn-large login-btn" onclick="SIGNUP_GoTo()">Register</button>
+          <button type="submit" class="btn btn-primary btn-block btn-large login-btn" onclick="LOGIN_Attempt(); return false;">Log in</button>
+          <button class="btn btn-primary btn-block btn-large login-btn" onclick="SIGNUP_GoTo(); return false;">Register</button>
         </form>
     </div>
   </div>`
@@ -38,4 +38,9 @@ let LOGIN_GoTo = () => {
 
   let everything = document.getElementById("everything");
   everything.innerHTML = LOGIN_html_code;
+}
+
+let LogOut = () => {
+  window.localStorage.removeItem('token');
+  LOGIN_GoTo();
 }

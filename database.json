@@ -31,7 +31,7 @@
 					"note_id": "note_id3",
 					"title": "Fa curat again and again",
 					"deadline": "2020-05-17T18:12",
-					"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde ipsa totam, dolorem vel debitis laudantium, dolor neque pariatur non officiis, culpa harum voluptatem temporibus. Aspernatur iste recusandae quod rem.",
+					"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde ipsa totam, dolorem vel debitis laudantium, dolor neque pariatur non officiis, culpa harum voluptatem temporibus. Aspernatur iste recusandae quod rem.fdasfasgfad",
 					"done": false
 				},
 				{
@@ -39,7 +39,7 @@
 					"title": "Fa curatasdfasdfdasqwee",
 					"deadline": "2020-05-17T18:12",
 					"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde ipsa totam, dolorem vel debitis laudantium, dolor neque pariatur non officiis, culpa harum voluptatem temporibus. Aspernatur iste recusandae quod rem.",
-					"done": true
+					"done": false
 				},
 				{
 					"note_id": "note_id5",
@@ -53,14 +53,14 @@
 					"title": "Fa curat",
 					"deadline": "2020-05-17T18:12",
 					"description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure unde ipsa totam, dolorem vel debitis laudantium, dolor neque pariatur non officiis, culpa harum voluptatem temporibus. Aspernatur iste recusandae quod rem.",
-					"done": true
+					"done": false
 				},
 				{
 					"note_id": "4bULDZ3w13XnKEaBEu2s",
 					"title": "First new note",
 					"deadline": "2020-05-23T11:11",
 					"description": "sdafagvaervadfva",
-					"done": false
+					"done": true
 				},
 				{
 					"note_id": "ciDKkB6qjVKTXfnN4urQ",
@@ -68,6 +68,20 @@
 					"deadline": "2020-05-21T02:03",
 					"description": "1dsafsdagq",
 					"done": true
+				},
+				{
+					"title": "First new note",
+					"deadline": "2020-05-30T02:22",
+					"description": "i am so cool",
+					"done": false,
+					"note_id": "BqXCJGNZuNTpiSXHa32C"
+				},
+				{
+					"title": "Banane1234",
+					"deadline": "2020-05-30T02:22",
+					"description": "asda",
+					"done": false,
+					"note_id": "0mGMy1bKXAvdT6hLZVMD"
 				}
 			]
 		}

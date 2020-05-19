@@ -1,5 +1,3 @@
-
-
 let SYNC_SignIn = (user) => {
     let server_response = { };
 
