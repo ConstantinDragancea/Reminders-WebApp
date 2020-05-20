@@ -223,6 +223,7 @@ a.logo h1{
 
 .description p {
     font-size: 18px;
+    white-space: pre-wrap;
 }
 
 .done-button-wrapper {

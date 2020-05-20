@@ -19,7 +19,7 @@ const successful_login = {
 }
 
 const failed_login = {
-    'message' : 'Wrong username and/or password',
+    'reason' : 'Wrong username and/or password',
     'successful': false
 }
 
@@ -244,7 +244,8 @@ app.get('/user/note:id', (req, res) => {
 // Read All --------------------------------
 
 app.get('/users/:id', (req, res) => {
-    let requestToken = req.params.id.substring(1);
+    // let requestToken = req.params.id.substring(1);
+    let requestToken = req.params.id;
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== requestToken){
         res.send(failed_operation);
         return;

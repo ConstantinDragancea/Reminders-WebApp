@@ -46,7 +46,7 @@ const MENU_html_code =
 let modal_html_code = (id, nameFunc) => {
 
   let str_ = `<div class="modal-view" id="modal-note-view">
-      <form id="modal-note-form" class="modal-note-form">
+      <form id="modal-note-form" class="modal-note-form" onsubmit="MENU_SaveNote('${id}', ${nameFunc}); return false;">
       <h3>Insert note details</h3>
       <fieldset>
         <input id="modal-note-input-title" class="modal-note-input" placeholder="Note Title" type="text" tabindex="1" required autofocus>
@@ -58,7 +58,7 @@ let modal_html_code = (id, nameFunc) => {
         <textarea id="modal-note-input-description" class="modal-note-input" placeholder="Type your reminder here..." tabindex="5" required></textarea>
       </fieldset>
       <fieldset>
-        <button onclick="MENU_SaveNote('${id}', ${nameFunc}); return false;" class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
+        <button class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
       </fieldset>
       <fieldset>
         <button class="modal-note-input modal-note-discard" onclick="MENU_CloseModal(); return false;" id="modal-note-discard" data-submit="...Sending">Discard changes</button>
@@ -74,7 +74,7 @@ let current_user = {};
 
 let MENU_GoTo = () => {
 
-  fetch('users/:' + window.localStorage.getItem('token'))
+  fetch('users/' + window.localStorage.getItem('token'))
     .then(res => res.json())
     .then(res => {
       current_user = res;
@@ -92,7 +92,7 @@ let MENU_GoTo = () => {
       let greeting = document.getElementById('greeting');
       greeting.innerHTML = "Here are your future reminders, " + current_user['name'] + ":";
 
-      let nowTime = current_time();
+      let nowTime = new Date();
 
       let main = document.getElementById('reminders-view');
       for (let i = 0; i < notes.length; i++) {
@@ -117,7 +117,7 @@ let MENU_GoTo = () => {
 
 let HISTORY_GoTo = () => {
 
-  fetch('users/:' + window.localStorage.getItem('token'))
+  fetch('users/' + window.localStorage.getItem('token'))
     .then(res => res.json())
     .then(res => {
       current_user = res;
@@ -147,7 +147,7 @@ let HISTORY_GoTo = () => {
 
 let MISSED_GoTo = () => {
 
-  fetch('users/:' + window.localStorage.getItem('token'))
+  fetch('users/' + window.localStorage.getItem('token'))
     .then(res => res.json())
     .then(res => {
       current_user = res;
@@ -165,7 +165,7 @@ let MISSED_GoTo = () => {
       let greeting = document.getElementById('greeting');
       greeting.innerHTML = "Here are your reminders with missed deadlines, " + current_user['name'] + ":";
 
-      let nowTime = current_time();
+      let nowTime = new Date();
 
       let main = document.getElementById('reminders-view');
       for (let i = 0; i < notes.length; i++) {
