@@ -5,12 +5,12 @@ const fs = require('fs');
 const port = 3000;
 const morgan = require('morgan')
 
-// Middleware
+// Middleware ------------------------------------------------------
 app.use(express.static('public'));
 app.use(morgan('tiny'));
 app.use(express.json());
 
-// Possible server responses to attemps to log in / register
+// Possible server responses to attemps to log in / register --------
 
 const successful_login = {
     'user_id' : 'abcd',
@@ -31,13 +31,17 @@ const failed_operation = {
     'successful': false
 }
 
+const incorrect_token = {
+    'successful': false
+}
+
 let current_time = () => {
     let now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     return now;
 }
 
-// Useful functions
+// Useful functions -------------------------------------------------
 
 let CreateUniqueID = () => {
     let length = 20;
@@ -60,25 +64,8 @@ let ValidUserName = str => {
 };
 
 
+// Write a reminder to the database -------------------------
 
-// Write an user to the database
-let WriteUser = user => {
-    let db = readJSONFile();
-    let found = false;
-    for (let i=0; i<db.users.length; i++){
-        if (db['users'][i].id == user.id){
-            db['users'][i] = user;
-            found = true;
-            break;
-        }
-    }
-    if (!found){
-        db.users.push(user);
-    }
-    writeJSONFile(db);
-}
-
-// Write a reminder to the database
 let WriteNote = (user_id, note) => {
     let db = readJSONFile();
     for (let i=0; i < db.users.length; i++){
@@ -92,7 +79,7 @@ let WriteNote = (user_id, note) => {
 // For storing the logged user
 let active_user = { };
 
-// LOGIN and SIGNUP API
+// LOGIN and SIGNUP API -------------------------------
 
 app.post('/API/login', (req, res) => {
     let user = req.body;
@@ -102,15 +89,16 @@ app.post('/API/login', (req, res) => {
     if (user.hasOwnProperty('token')){
         if (active_user.hasOwnProperty('token') && 
             active_user['token'] === user['token']){
-                active_user['last_action'] = new Date();
+                active_user['last_action'] = current_time();
                 index_response = successful_login;
                 index_response['id'] = active_user['id'];
+                index_response['token'] = active_user['token'];
         }
         else {
             active_user = { };
             index_response = failed_login;
         }
-        res.end(JSON.stringify(index_response));
+        res.send(index_response);
         return;
     }
 
@@ -138,10 +126,73 @@ app.post('/API/login', (req, res) => {
     else {
         index_response = failed_login;
     }
-    res.end(JSON.stringify(index_response));
+    res.send(index_response);
 })
 
-// CRUD API
+app.post('/API/signup', (req, res) => {
+    let newUser = req.body;
+
+    let server_response = failed_operation;
+
+    if (newUser.password !== newUser.password2){
+        server_response['reason'] = "The 2 passwords don't match!";
+        res.send(server_response);
+        return;
+    }
+
+    if (!ValidUserName(newUser.username) || !ValidUserName(newUser.name)){
+        server_response['reason'] = "Please insert a valid username!"
+        res.send(server_response);
+        return;
+    }
+
+    let db = readJSONFile();
+
+    for (let i=0; i < db.users.length; i++){
+        if (db.users[i].username === newUser.username){
+            server_response['reason'] = "There already exists a user with that username!";
+            res.send(server_response);
+            return;
+        }
+    }
+
+    let user_formatted = {};
+    user_formatted['id'] = CreateUniqueID();
+    user_formatted['name'] = newUser.name;
+    user_formatted['username'] = newUser.username;
+    user_formatted['password'] = newUser.password;
+    user_formatted['notes'] = [];
+
+    db['users'].push(user_formatted);
+
+    writeJSONFile(db);
+
+    active_user['token'] = CreateUniqueID();
+    active_user['user'] = user_formatted;
+    active_user['last_action'] = current_time();
+
+    server_response = {
+        'successful': true,
+        'user_id': user_formatted.id,
+        'token': active_user.token
+    }
+
+    res.send(server_response);
+})
+
+app.delete('/API/logout', (req, res) => {
+    let reqToken = req.body.token;
+
+    if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
+        res.send(failed_operation);
+        return;
+    }
+
+    active_user = {};
+    res.send(successful_operation);
+})
+
+// CRUD API -----------------------------------------------------
 
 // CREATE -----------------------------------
 app.post('/user/newnote', (req, res) => {
@@ -151,7 +202,7 @@ app.post('/user/newnote', (req, res) => {
     newNote['note_id'] = CreateUniqueID();
 
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
-        res.end(JSON.stringify(failed_operation));
+        res.send(failed_operation);
         return;
     }
 
@@ -166,19 +217,10 @@ app.post('/user/newnote', (req, res) => {
     }
 
     writeJSONFile(db);
-    res.end(JSON.stringify(successful_operation));
+    res.send(successful_operation);
 })
 
 // Read One -----------------------------------
-let ReadUser = user => {
-    let user_data;
-    fetch('http://localhost:3000/users/' + user.id)
-        .then((res) => res.json())
-        .then((userFound) => {
-            user_data = userFound;
-        });
-    return user_data;
-}
 
 app.get('/user/note:id', (req, res) => {
     let noteId = req.params.id.substring(1);
@@ -192,7 +234,7 @@ app.get('/user/note:id', (req, res) => {
     let userNotes = active_user['user']['notes'];
     for (let i=0; i < userNotes.length; i++){
         if (userNotes[i].noteId === noteId){
-            res.end(JSON.stringify(userNotes[i]));
+            res.send(userNotes[i]);
             return;
         }
     }
@@ -200,25 +242,25 @@ app.get('/user/note:id', (req, res) => {
 })
 
 // Read All --------------------------------
+
 app.get('/users/:id', (req, res) => {
     let requestToken = req.params.id.substring(1);
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== requestToken){
-        res.end(JSON.stringify(failed_login));
+        res.send(failed_operation);
         return;
     }
-
-    res.end(JSON.stringify(active_user.user));
+    res.send(active_user.user);
 })
 
 
-// Update
+// Update ----------------------------------
 
 app.put('/user/editnote', (req, res) => {
     let reqToken = req.body.token;
     let newNote = req.body.note;
 
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
-        res.end(JSON.stringify(failed_operation));
+        res.send(failed_operation);
         return;
     }
 
@@ -248,7 +290,7 @@ app.put('/user/markasdonenote', (req, res) => {
     let newNote = req.body.note_id;
 
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
-        res.end(JSON.stringify(failed_operation));
+        res.send(failed_operation);
         return;
     }
 
@@ -269,7 +311,7 @@ app.put('/user/markasdonenote', (req, res) => {
 
     writeJSONFile(db);
 
-    res.end(JSON.stringify(successful_operation));
+    res.send(successful_operation);
 
 })
 
@@ -278,7 +320,7 @@ app.put('/user/markasundonenote', (req, res) => {
     let newNote = req.body.note_id;
 
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
-        res.end(JSON.stringify(failed_operation));
+        res.send(failed_operation);
         return;
     }
 
@@ -299,18 +341,18 @@ app.put('/user/markasundonenote', (req, res) => {
 
     writeJSONFile(db);
 
-    res.end(JSON.stringify(successful_operation));
+    res.send(successful_operation);
 
 })
 
-// Delete
+// Delete -----------------------------------
 
 app.delete('/user/deletenote', (req, res) => {
     let reqToken = req.body.token;
     let to_delete_id = req.body.note_id;
 
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== reqToken){
-        res.end(JSON.stringify(failed_operation));
+        res.send(failed_operation);
         return;
     }
 
@@ -331,8 +373,10 @@ app.delete('/user/deletenote', (req, res) => {
 
     writeJSONFile(db);
 
-    res.end(JSON.stringify(successful_operation));
+    res.send(successful_operation);
 })
+
+// Helper functions to interact with the database ------------------------
 
 function readJSONFile() {
     return JSON.parse(fs.readFileSync('database.json'));

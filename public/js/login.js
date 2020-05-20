@@ -4,10 +4,12 @@ const LOGIN_html_code =
   `<div id="login-screen">
     <div class="login">
       <h1>Login</h1>
-        <form>
+        <form onsubmit="LOGIN_Attempt(); return false;">
           <input id="username" class="login-input" type="text" name="u" placeholder="Username" required="required" />
           <input id="password" class="login-input" type="password" name="p" placeholder="Password" required="required" />
-          <button type="submit" class="btn btn-primary btn-block btn-large login-btn" onclick="LOGIN_Attempt(); return false;">Log in</button>
+          <button type="submit" class="btn btn-primary btn-block btn-large login-btn">Log in</button>
+        </form>
+        <form>
           <button class="btn btn-primary btn-block btn-large login-btn" onclick="SIGNUP_GoTo(); return false;">Register</button>
         </form>
     </div>
@@ -32,7 +34,7 @@ let LOGIN_GoTo = () => {
   // Maybe check if there is an user logged in
   let localToken = window.localStorage.getItem('token');
   if (localToken != null && localToken != undefined) {
-    SYNC_SignIn({token : localToken});
+    SYNC_SignIn({ token: localToken });
     return;
   }
 
@@ -41,6 +43,20 @@ let LOGIN_GoTo = () => {
 }
 
 let LogOut = () => {
-  window.localStorage.removeItem('token');
-  LOGIN_GoTo();
+
+  let req_body = {
+    'token': window.localStorage.getItem('token')
+  };
+
+  fetch('API/logout', {
+    method: 'DELETE',
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(req_body)
+  }).then(res => res.json())
+    .then(res => {
+      LOGIN_GoTo();
+      return;
+    });
 }

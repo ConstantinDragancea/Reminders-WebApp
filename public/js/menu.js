@@ -74,7 +74,7 @@ let current_user = {};
 
 let MENU_GoTo = () => {
 
-  fetch('http://localhost:3000/users/:' + window.localStorage.getItem('token'))
+  fetch('users/:' + window.localStorage.getItem('token'))
     .then(res => res.json())
     .then(res => {
       current_user = res;
@@ -92,7 +92,7 @@ let MENU_GoTo = () => {
       let greeting = document.getElementById('greeting');
       greeting.innerHTML = "Here are your future reminders, " + current_user['name'] + ":";
 
-      let nowTime = new Date();
+      let nowTime = current_time();
 
       let main = document.getElementById('reminders-view');
       for (let i = 0; i < notes.length; i++) {
@@ -117,7 +117,7 @@ let MENU_GoTo = () => {
 
 let HISTORY_GoTo = () => {
 
-  fetch('http://localhost:3000/users/:' + window.localStorage.getItem('token'))
+  fetch('users/:' + window.localStorage.getItem('token'))
     .then(res => res.json())
     .then(res => {
       current_user = res;
@@ -147,7 +147,7 @@ let HISTORY_GoTo = () => {
 
 let MISSED_GoTo = () => {
 
-  fetch('http://localhost:3000/users/:' + window.localStorage.getItem('token'))
+  fetch('users/:' + window.localStorage.getItem('token'))
     .then(res => res.json())
     .then(res => {
       current_user = res;
@@ -165,7 +165,7 @@ let MISSED_GoTo = () => {
       let greeting = document.getElementById('greeting');
       greeting.innerHTML = "Here are your reminders with missed deadlines, " + current_user['name'] + ":";
 
-      let nowTime = new Date();
+      let nowTime = current_time();
 
       let main = document.getElementById('reminders-view');
       for (let i = 0; i < notes.length; i++) {
@@ -285,18 +285,25 @@ let MENU_SaveNote = (id, callback) => {
 
   let title_ = document.getElementById('modal-note-input-title');
   new_note['title'] = title_.value;
+  new_note.title.trim();
 
   let deadline_ = document.getElementById('modal-note-input-deadline');
   new_note['deadline'] = deadline_.value;
 
   let description_ = document.getElementById('modal-note-input-description');
   new_note['description'] = description_.value;
+  new_note.description.trim();
 
   if (id == '-1') {
     new_note['done'] = false;
   }
 
   req_body['note'] = new_note;
+
+  if (new_note.title.length > 24){
+    alert("Please insert a shorter note title!");
+    return;
+  }
 
   if (id != "-1") {
 
@@ -318,7 +325,7 @@ let MENU_SaveNote = (id, callback) => {
       })
   }
   else {
-    fetch('http://localhost:3000/user/newnote', {
+    fetch('user/newnote', {
       method: 'POST',
       headers: {
         "Content-type": "application/json"
@@ -352,7 +359,7 @@ let MENU_DeleteNote = (id, callback) => {
     'token': window.localStorage.getItem('token'),
     'note_id': id
   }
-  fetch('http://localhost:3000/user/deletenote', {
+  fetch('user/deletenote', {
     method: 'DELETE',
     headers: {
       "Content-type": "application/json"
@@ -378,7 +385,7 @@ let MENU_MarkAsDone = (id, codFunc) => {
 
   let callback = callback_ids[codFunc];
 
-  fetch('http://localhost:3000/user/markasdonenote', {
+  fetch('user/markasdonenote', {
     method: 'PUT',
     headers: {
       "Content-type": "application/json"
@@ -404,7 +411,7 @@ let MENU_MarkAsUndone = (id, codFunc) => {
 
   let callback = callback_ids[codFunc];
 
-  fetch('http://localhost:3000/user/markasundonenote', {
+  fetch('user/markasundonenote', {
     method: 'PUT',
     headers: {
       "Content-type": "application/json"
