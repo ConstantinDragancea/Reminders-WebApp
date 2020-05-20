@@ -3,5 +3,6 @@
 package-lock.json
 /public/login.html
 note-list.html
+signup.html
 database.json
 sample_database.json
