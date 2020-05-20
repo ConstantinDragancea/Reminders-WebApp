@@ -56,6 +56,7 @@ let LogOut = () => {
     body: JSON.stringify(req_body)
   }).then(res => res.json())
     .then(res => {
+      window.localStorage.removeItem('token');
       LOGIN_GoTo();
       return;
     });

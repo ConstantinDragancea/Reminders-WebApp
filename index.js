@@ -222,7 +222,7 @@ app.post('/user/newnote', (req, res) => {
 
 // Read One -----------------------------------
 
-app.get('/user/note:id', (req, res) => {
+app.get('/user/note/:id', (req, res) => {
     let noteId = req.params.id.substring(1);
     noteId = "note_id" + noteId;
     let reqToken = req.body;
@@ -243,9 +243,9 @@ app.get('/user/note:id', (req, res) => {
 
 // Read All --------------------------------
 
-app.get('/users/:id', (req, res) => {
+app.get('/users/:token', (req, res) => {
     // let requestToken = req.params.id.substring(1);
-    let requestToken = req.params.id;
+    let requestToken = req.params.token;
     if (!active_user.hasOwnProperty('token') || active_user['token'] !== requestToken){
         res.send(failed_operation);
         return;
