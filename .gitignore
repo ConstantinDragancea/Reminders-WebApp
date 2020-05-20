@@ -3,3 +3,5 @@
 package-lock.json
 /public/login.html
 note-list.html
+database.json
+sample_database.json
