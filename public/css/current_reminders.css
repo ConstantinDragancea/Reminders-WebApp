@@ -272,6 +272,10 @@ a.logo h1{
 }
 
 @media screen and (max-width: 768px) {
+    .navbar {
+        font-size: 14px;
+    }
+
     .body-layout{
         grid-template-columns: 1em auto 1em;
     }
