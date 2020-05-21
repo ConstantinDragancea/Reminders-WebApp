@@ -87,6 +87,7 @@ app.post('/API/login', (req, res) => {
 
     // check if there is an existing token and that it is correct
     if (user.hasOwnProperty('token')){
+        let server_response = failed_login;
         if (active_user.hasOwnProperty('token') && 
             active_user['token'] === user['token']){
                 active_user['last_action'] = current_time();
@@ -96,9 +97,9 @@ app.post('/API/login', (req, res) => {
         }
         else {
             active_user = { };
-            index_response = failed_login;
+            delete server_response.reason;
         }
-        res.send(index_response);
+        res.send(server_response);
         return;
     }
 
