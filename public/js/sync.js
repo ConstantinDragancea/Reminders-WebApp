@@ -15,10 +15,10 @@ let SYNC_SignIn = (user) => {
         }
         else{
             window.localStorage.removeItem('token');
-            LOGIN_GoTo();
             if (res.hasOwnProperty('reason')){
                 alert(res.reason);
             }
+            LOGIN_GoTo();
         }
     });
     

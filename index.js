@@ -162,6 +162,7 @@ app.post('/API/signup', (req, res) => {
     let user_formatted = {};
     user_formatted['id'] = CreateUniqueID();
     user_formatted['name'] = newUser.name;
+    user_formatted['birthdate'] = newUser.birthdate;
     user_formatted['username'] = newUser.username;
     user_formatted['password'] = newUser.password;
     user_formatted['notes'] = [];

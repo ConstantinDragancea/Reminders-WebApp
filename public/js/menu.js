@@ -1,7 +1,7 @@
 const MENU_html_code =
   `<!-- Navbar at the top -->
 <div class="navbar">
-  <a class="logo" href="#"><h1>Reminders</h1></a>
+  <a class="logo" href="#"><h1 class="word-count">Reminders</h1></a>
   <nav>
     <ul class="nav__links">
       <li><a href="#" onclick="MENU_GoTo(); return false;">Home</a></li>
@@ -17,17 +17,17 @@ const MENU_html_code =
 <div id="mobile__menu" class="overlay">
   <a class="close" onclick="closeNav()">&times;</a>
   <div class="overlay__content">
-    <a href="#" onclick="MENU_GoTo(); return false;">Home</a>
-    <a href="#" onclick="HISTORY_GoTo(); return false;">History</a>
-    <a href="#" onclick="MISSED_GoTo(); return false;" >Missed Reminders</a>
-    <a href="#" onclick="LogOut(); return false;" >Log Out</a>
+    <a class="word-count" href="#" onclick="MENU_GoTo(); return false;">Home</a>
+    <a class="word-count" href="#" onclick="HISTORY_GoTo(); return false;">History</a>
+    <a class="word-count" href="#" onclick="MISSED_GoTo(); return false;" >Missed Reminders</a>
+    <a class="word-count" href="#" onclick="LogOut(); return false;" >Log Out</a>
   </div>
 </div>
 
 <div class="body-layout">
 
   <header class="body-greeting">
-    <h2 id="greeting">Here are some future reminders:</h2>
+    <h2 id="greeting" class="word-count" >Here are some future reminders:</h2>
   </header>
 
   <main id="reminders-view" class="container-reminders">
@@ -35,7 +35,7 @@ const MENU_html_code =
   </main>
 
   <footer class="footer">
-    <p>Copyright 2020 Constantin Dragancea FMI Unibuc</p>
+    <p class="word-count" >Copyright 2020 Constantin Dragancea FMI Unibuc</p>
   </footer>
 
 </div>`
@@ -52,7 +52,7 @@ let modal_html_code = (id, nameFunc) => {
         <input id="modal-note-input-title" class="modal-note-input" placeholder="Reminder Title" type="text" tabindex="1" required autofocus>
       </fieldset>
       <fieldset>
-        <input id="modal-note-input-deadline" class="modal-note-input modal" placeholder="Reminder Deadline" type="date" tabindex="2" required>
+        <input id="modal-note-input-deadline" class="modal-note-input modal" placeholder="Reminder Deadline" type="text" onfocus="(this.type='date')" tabindex="2" required>
       </fieldset>
       <fieldset>
         <textarea id="modal-note-input-description" class="modal-note-input" placeholder="Type your reminder here..." tabindex="3" required></textarea>
@@ -110,6 +110,8 @@ let MENU_GoTo = () => {
 
       note_entry_new.appendChild(header_new_note);
       main.appendChild(note_entry_new);
+      
+      setWordCountFooter();
 
     });
 
@@ -140,6 +142,8 @@ let HISTORY_GoTo = () => {
         if (notes[i].done == true)
           main.appendChild(create_note_html(notes[i], 1));
       }
+
+      setWordCountFooter();
 
     });
 
@@ -174,6 +178,8 @@ let MISSED_GoTo = () => {
           main.appendChild(create_note_html(notes[i], 2));
       }
 
+      setWordCountFooter();
+
     });
 
 }
@@ -186,7 +192,7 @@ let create_note_html = (note, codFunc) => {
 
   let title = document.createElement('div');
   title.setAttribute('class', 'title');
-  title.innerHTML = "<p>" + note.title + "</p>";
+  title.innerHTML = `<p class="word-count" >` + note.title + "</p>";
   note_entry.appendChild(title);
 
   let deadline = document.createElement('div');
@@ -201,17 +207,17 @@ let create_note_html = (note, codFunc) => {
 
   let description = document.createElement('div');
   description.setAttribute('class', 'description');
-  description.innerHTML = "<p>" + note.description + "</p>";
+  description.innerHTML = `<p class="word-count" >` + note.description + "</p>";
   note_entry.appendChild(description);
 
   let done_button_wrapper = document.createElement('div');
   done_button_wrapper.setAttribute('class', 'done-button-wrapper');
 
   let aux_str = `<div class="done-button" onclick="MENU_MarkAs${(note.done ? 'Undone' : 'Done')}('${note.note_id}', ${codFunc}); return false;">
-                <p>Mark as ${(note.done ? 'Undone' : 'Done')}</p>
+                <p class="word-count" >Mark as ${(note.done ? 'Undone' : 'Done')}</p>
             </div>
             <div class="done-button" onclick="MENU_EditNote('${note.note_id}', ${codFunc}); return false;">
-          <p>Edit Note</p>
+          <p class="word-count" >Edit Note</p>
         </div>`;
 
   done_button_wrapper.innerHTML = aux_str;
@@ -317,6 +323,7 @@ let MENU_SaveNote = (id, callback) => {
       .then(res => {
         if (res.hasOwnProperty('successful') && res['successful']) {
           callback();
+          setWordCountFooter();
         }
         else {
           window.localStorage.removeItem('token');
@@ -334,7 +341,8 @@ let MENU_SaveNote = (id, callback) => {
     }).then(res => res.json())
       .then(res => {
         if (res.hasOwnProperty('successful') && res['successful']) {
-          callback()
+          callback();
+          setWordCountFooter();
         }
         else {
           window.localStorage.removeItem('token');
