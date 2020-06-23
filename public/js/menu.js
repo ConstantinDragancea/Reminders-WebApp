@@ -49,13 +49,13 @@ let modal_html_code = (id, nameFunc) => {
       <form id="modal-note-form" class="modal-note-form" onsubmit="MENU_SaveNote('${id}', ${nameFunc}); return false;">
       <h3>Insert note details</h3>
       <fieldset>
-        <input id="modal-note-input-title" class="modal-note-input" placeholder="Note Title" type="text" tabindex="1" required autofocus>
+        <input id="modal-note-input-title" class="modal-note-input" placeholder="Reminder Title" type="text" tabindex="1" required autofocus>
       </fieldset>
       <fieldset>
-        <input id="modal-note-input-deadline" class="modal-note-input modal" placeholder="Note Deadline" type="datetime-local" tabindex="2" required>
+        <input id="modal-note-input-deadline" class="modal-note-input modal" placeholder="Reminder Deadline" type="date" tabindex="2" required>
       </fieldset>
       <fieldset>
-        <textarea id="modal-note-input-description" class="modal-note-input" placeholder="Type your reminder here..." tabindex="5" required></textarea>
+        <textarea id="modal-note-input-description" class="modal-note-input" placeholder="Type your reminder here..." tabindex="3" required></textarea>
       </fieldset>
       <fieldset>
         <button class="modal-note-input" name="submit" type="submit" id="modal-note-save" data-submit="...Sending">Save changes</button>
@@ -192,7 +192,7 @@ let create_note_html = (note, codFunc) => {
   let deadline = document.createElement('div');
   deadline.setAttribute('class', 'deadline');
   let note_date = new Date(note.deadline);
-  note_date = note_date.toLocaleString();
+  note_date = note_date.toLocaleDateString();
   deadline.innerHTML = "<p>" + note_date + "</p>";
   note_entry.appendChild(deadline);
 

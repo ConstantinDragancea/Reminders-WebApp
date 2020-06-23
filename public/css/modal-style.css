@@ -52,7 +52,7 @@ fieldset {
 }
 
 .modal-note-form input[type="text"],
-.modal-note-form input[type="datetime-local"],
+.modal-note-form input[type="date"],
 .modal-note-form textarea {
   width: 100%;
   border: 1px solid #ccc;
@@ -62,7 +62,7 @@ fieldset {
 }
 
 .modal-note-form input[type="text"]:hover,
-.modal-note-form input[type="datetime-local"]:hover,
+.modal-note-form input[type="date"]:hover,
 .modal-note-form textarea:hover {
   -webkit-transition: border-color 0.3s ease-in-out;
   -moz-transition: border-color 0.3s ease-in-out;
