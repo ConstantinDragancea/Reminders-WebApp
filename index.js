@@ -3,7 +3,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const port = 3000;
-const morgan = require('morgan')
+const morgan = require('morgan');
+const requestIp = require('request-ip');
 
 //test
 
@@ -11,6 +12,7 @@ const morgan = require('morgan')
 app.use(express.static('public'));
 app.use(morgan('tiny'));
 app.use(express.json());
+app.use(requestIp.mw())
 
 // Possible server responses to attemps to log in / register --------
 
@@ -50,6 +52,13 @@ let CreateUniqueID = () => {
     return result;
 }
 
+let CreateRandomIp = () => {
+    let result = '';
+    result += Math.floor(Math.random() * 193)+ '.' + Math.floor(Math.random() * 167) + '.';
+    result += Math.floor(Math.random() * 100) + '.' + Math.floor(Math.random() * 100);
+    return result;
+}
+
 let ValidUserName = str => {
     if ((typeof str) !== 'string')
         return false;
@@ -73,7 +82,6 @@ app.post('/API/login', (req, res) => {
         let server_response = failed_login;
         if (active_user.hasOwnProperty('token') && 
             active_user['token'] === user['token']){
-                active_user['last_action'] = new Date();
                 index_response = successful_login;
                 index_response['id'] = active_user['id'];
                 index_response['token'] = active_user['token'];
@@ -87,24 +95,32 @@ app.post('/API/login', (req, res) => {
     }
 
 
-    const users = readJSONFile()['users'];
+    let db = readJSONFile();
 
     let found = false;
-    for (let i=0; i<users.length; i++){
-        if (users[i].username === user.username && users[i].password === user.password){
+    let user_idx = 0;
+    for (let i=0; i < db['users'].length; i++){
+        if (db['users'][i].username === user.username && db['users'][i].password === user.password){
             found = true;
-            user = users[i];
+            user = db['users'][i];
+            user_idx = i;
         }
     }
     if (found){
         index_response = successful_login;
         index_response.user_id = user.id;
         index_response.token = CreateUniqueID();
+        index_response.last_login_time = user.last_login_time;
+        index_response.last_login_ip = user.last_login_ip;
+
+        db['users'][user_idx].last_login_time = new Date();
+        db['users'][user_idx].last_login_ip = CreateRandomIp();
+
+        writeJSONFile(db);
 
         active_user = {
             'token' : index_response.token,
-            'user' : user,
-            'last_action': new Date()
+            'user' : user
         };
     }
     else {
@@ -118,7 +134,7 @@ app.post('/API/login', (req, res) => {
     logs += log_message + '\n';
 
     writeLogsFile(logs);
-
+    
     res.send(index_response);
 })
 
@@ -156,6 +172,8 @@ app.post('/API/signup', (req, res) => {
     user_formatted['username'] = newUser.username;
     user_formatted['password'] = newUser.password;
     user_formatted['notes'] = [];
+    user_formatted['last_login_time'] = new Date();
+    user_formatted['last_login_ip'] = req.ip;
 
     db['users'].push(user_formatted);
 
@@ -163,7 +181,6 @@ app.post('/API/signup', (req, res) => {
 
     active_user['token'] = CreateUniqueID();
     active_user['user'] = user_formatted;
-    active_user['last_action'] = new Date();
 
     server_response = {
         'successful': true,

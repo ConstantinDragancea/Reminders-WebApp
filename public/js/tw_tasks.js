@@ -67,9 +67,35 @@ let wordCounter = () => {
 
 }
 
+let updateAfterLoad = () => {
+    setWordCountFooter();
+    showLastLogin();
+}
+
 let setWordCountFooter = () => {
     let footer = document.getElementsByClassName('footer')[0];
     let footer_p = footer.children[0];
 
     footer_p.innerHTML += ` (${wordCounter()} words on this page)`;
+}
+
+let showLastLogin = () => {
+    let last_login_h = document.getElementById('last-login');
+
+    let last_login_time = window.localStorage.getItem('last_login_time');
+    let last_login_ip = window.localStorage.getItem('last_login_ip');
+    if (last_login_ip !== null && last_login_ip !== 'undefined') {
+        last_login_h.innerHTML = `Ultima intrare: [${time_formatted(new Date(last_login_time))}] from [${last_login_ip}]`;
+    }
+    else{
+        last_login_h.innerHTML = `Este prima data cand te autentifici!`;
+    }
+}
+
+let time_formatted = (time) => {
+    let hrs = (time.getHours() < 10 ? '0' : '') + time.getHours();
+    let mins = (time.getMinutes() < 10 ? '0' : '') + time.getMinutes();
+    let secs = (time.getSeconds() < 10 ? '0' : '') + time.getSeconds();
+
+    return `${time.toLocaleDateString()}, ${hrs}:${mins}:${secs}`;
 }

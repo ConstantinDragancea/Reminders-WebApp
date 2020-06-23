@@ -11,6 +11,8 @@ let SYNC_SignIn = (user) => {
 
         if (res.hasOwnProperty('successful') && res['successful']){
             window.localStorage.setItem('token', res.token);
+            window.localStorage.setItem('last_login_time', res.last_login_time);
+            window.localStorage.setItem('last_login_ip', res.last_login_ip);
             MENU_GoTo();
         }
         else{

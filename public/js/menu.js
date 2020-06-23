@@ -27,6 +27,7 @@ const MENU_html_code =
 <div class="body-layout">
 
   <header class="body-greeting">
+    <h2 id="last-login" class="word-count">Last login</h2>
     <h2 id="greeting" class="word-count" >Here are some future reminders:</h2>
   </header>
 
@@ -111,7 +112,7 @@ let MENU_GoTo = () => {
       note_entry_new.appendChild(header_new_note);
       main.appendChild(note_entry_new);
       
-      setWordCountFooter();
+      updateAfterLoad();
 
     });
 
@@ -143,7 +144,7 @@ let HISTORY_GoTo = () => {
           main.appendChild(create_note_html(notes[i], 1));
       }
 
-      setWordCountFooter();
+      updateAfterLoad();
 
     });
 
@@ -178,7 +179,7 @@ let MISSED_GoTo = () => {
           main.appendChild(create_note_html(notes[i], 2));
       }
 
-      setWordCountFooter();
+      updateAfterLoad();
 
     });
 

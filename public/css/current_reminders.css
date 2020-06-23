@@ -133,6 +133,7 @@ a.logo h1{
     grid-area: header;
     display: flex;
     align-self: center;
+    flex-direction: column;
 }
 
 /* REMINDERS CARDS SETTINGS */
