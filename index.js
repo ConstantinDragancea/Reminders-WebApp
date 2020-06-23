@@ -37,12 +37,6 @@ const incorrect_token = {
     'successful': false
 }
 
-let current_time = () => {
-    let now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    return now;
-}
-
 // Useful functions -------------------------------------------------
 
 let CreateUniqueID = () => {
@@ -65,19 +59,6 @@ let ValidUserName = str => {
     return true;    
 };
 
-
-// Write a reminder to the database -------------------------
-
-let WriteNote = (user_id, note) => {
-    let db = readJSONFile();
-    for (let i=0; i < db.users.length; i++){
-        if (db['users'][i].id == user_id){
-            db['users'][i].push(note);
-        }
-    }
-    writeJSONFile(db);
-}
-
 // For storing the logged user
 let active_user = { };
 
@@ -92,7 +73,7 @@ app.post('/API/login', (req, res) => {
         let server_response = failed_login;
         if (active_user.hasOwnProperty('token') && 
             active_user['token'] === user['token']){
-                active_user['last_action'] = current_time();
+                active_user['last_action'] = new Date();
                 index_response = successful_login;
                 index_response['id'] = active_user['id'];
                 index_response['token'] = active_user['token'];
@@ -123,12 +104,21 @@ app.post('/API/login', (req, res) => {
         active_user = {
             'token' : index_response.token,
             'user' : user,
-            'last_action': current_time()
+            'last_action': new Date()
         };
     }
     else {
         index_response = failed_login;
     }
+
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} s-a logat in aplicatie`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
+
     res.send(index_response);
 })
 
@@ -173,13 +163,21 @@ app.post('/API/signup', (req, res) => {
 
     active_user['token'] = CreateUniqueID();
     active_user['user'] = user_formatted;
-    active_user['last_action'] = current_time();
+    active_user['last_action'] = new Date();
 
     server_response = {
         'successful': true,
         'user_id': user_formatted.id,
         'token': active_user.token
     }
+
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} si-a creat un cont in aplicatie`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
 
     res.send(server_response);
 })
@@ -191,6 +189,14 @@ app.delete('/API/logout', (req, res) => {
         res.send(failed_operation);
         return;
     }
+
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} s-a delogat din aplicatie`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
 
     active_user = {};
     res.send(successful_operation);
@@ -221,6 +227,15 @@ app.post('/user/newnote', (req, res) => {
     }
 
     writeJSONFile(db);
+
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} si-a creat o notita noua cu id-ul ${newNote.note_id}`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
+
     res.send(successful_operation);
 })
 
@@ -286,6 +301,14 @@ app.put('/user/editnote', (req, res) => {
 
     writeJSONFile(db);
 
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} a editat notita cu id-ul ${newNote.note_id}`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
+
     res.send(successful_operation);
 
 })
@@ -316,6 +339,14 @@ app.put('/user/markasdonenote', (req, res) => {
 
     writeJSONFile(db);
 
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} a marcat reminder-ul ${newNote} ca indeplinit`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
+
     res.send(successful_operation);
 
 })
@@ -345,6 +376,14 @@ app.put('/user/markasundonenote', (req, res) => {
     }
 
     writeJSONFile(db);
+
+    let logs = readLogsFile();
+    
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} a marcat reminder-ul ${newNote} ca neindeplinit`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
 
     res.send(successful_operation);
 
@@ -378,10 +417,27 @@ app.delete('/user/deletenote', (req, res) => {
 
     writeJSONFile(db);
 
+    let logs = readLogsFile();
+
+    let log_message = `[${current_time_formatted()}]`;
+    log_message += ` utilizatorul ${active_user.user.username} a sters notita cu id-ul ${to_delete_id}`;
+    logs += log_message + '\n';
+
+    writeLogsFile(logs);
+
     res.send(successful_operation);
 })
 
 // Helper functions to interact with the database ------------------------
+
+function current_time_formatted(){
+    let now = new Date();
+    let hrs = (now.getHours() < 10 ? '0' : '') + now.getHours();
+    let mins = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+    let secs = (now.getSeconds() < 10 ? '0' : '') + now.getSeconds();
+
+    return `${now.toLocaleDateString()}, ${hrs}:${mins}:${secs}`;
+}
 
 function readJSONFile() {
     return JSON.parse(fs.readFileSync('database.json'));
@@ -399,4 +455,16 @@ function writeJSONFile(content) {
         });
 }
 
-app.listen(port, () => console.log(`Web App listening on port ${port}!`));
+function readLogsFile() {
+    return fs.readFileSync('logs.txt');
+}
+
+function writeLogsFile(content) {
+    fs.writeFileSync('logs.txt', content, 'utf-8', err => {
+        if (err){
+            console.log(err);
+        }
+    })
+}
+
+app.listen(port, () => console.log(`Reminders Web App listening on port ${port}!`));
