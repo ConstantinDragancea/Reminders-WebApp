@@ -1,0 +1,10 @@
+.date-info {
+    position: fixed;
+    background-color: grey;
+    opacity: 55%;
+    width: 553px;
+    height: 48px;
+    right: 2%;
+    bottom: 5%;
+    padding: 4px;
+}

@@ -112,6 +112,7 @@ app.post('/API/login', (req, res) => {
         index_response.token = CreateUniqueID();
         index_response.last_login_time = user.last_login_time;
         index_response.last_login_ip = user.last_login_ip;
+        index_response.birthdate = user.birthdate;
 
         db['users'][user_idx].last_login_time = new Date();
         db['users'][user_idx].last_login_ip = CreateRandomIp();
@@ -173,7 +174,7 @@ app.post('/API/signup', (req, res) => {
     user_formatted['password'] = newUser.password;
     user_formatted['notes'] = [];
     user_formatted['last_login_time'] = new Date();
-    user_formatted['last_login_ip'] = req.ip;
+    user_formatted['last_login_ip'] = CreateRandomIp();
 
     db['users'].push(user_formatted);
 
@@ -185,7 +186,8 @@ app.post('/API/signup', (req, res) => {
     server_response = {
         'successful': true,
         'user_id': user_formatted.id,
-        'token': active_user.token
+        'token': active_user.token,
+        'birthdate': user_formatted.birthdate
     }
 
     let logs = readLogsFile();

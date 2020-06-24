@@ -67,9 +67,24 @@ let wordCounter = () => {
 
 }
 
+let updateDivDates = () => {
+    let birthdate = window.localStorage.getItem('birthdate');
+    birthdate = new Date(birthdate);
+    let now = new Date();
+    // Time since birth -------------------------------
+    let time_since_birth_p = document.getElementById('user-age');
+    time_since_birth_p.innerHTML = `age: ${getDiffDates(now, birthdate)}`;
+
+    // Time left alive --------------------------------
+    let time_left_alive_p = document.getElementById('time-left-alive');
+    time_left_alive_p.innerHTML = `${timeLeftAlive(birthdate)} left alive`;
+
+}
+
 let updateAfterLoad = () => {
     setWordCountFooter();
     showLastLogin();
+    setInterval(updateDivDates, 1000);
 }
 
 let setWordCountFooter = () => {

@@ -10,9 +10,11 @@ let SYNC_SignIn = (user) => {
     .then(res => {
 
         if (res.hasOwnProperty('successful') && res['successful']){
+            window.localStorage.clear();
             window.localStorage.setItem('token', res.token);
             window.localStorage.setItem('last_login_time', res.last_login_time);
             window.localStorage.setItem('last_login_ip', res.last_login_ip);
+            window.localStorage.setItem('birthdate', res.birthdate);
             MENU_GoTo();
         }
         else{
@@ -37,7 +39,9 @@ let SYNC_SignUp = (user) => {
     }).then(res => res.json())
     .then(res => {
         if (res.hasOwnProperty('successful') && res['successful']){
+            window.localStorage.clear();
             window.localStorage.setItem('token', res.token);
+            window.localStorage.setItem('birthdate', res.birthdate);
             MENU_GoTo();
         }
         else{

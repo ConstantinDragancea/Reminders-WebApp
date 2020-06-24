@@ -4,12 +4,12 @@ const MENU_html_code =
   <a class="logo" href="#"><h1 class="word-count">Reminders</h1></a>
   <nav>
     <ul class="nav__links">
-      <li><a href="#" onclick="MENU_GoTo(); return false;">Home</a></li>
-      <li><a href="#" onclick="HISTORY_GoTo(); return false;">History</a></li>
-      <li><a href="#" onclick="MISSED_GoTo(); return false;">Missed reminders</a></li>
+      <li><a class="word-count" href="#" onclick="MENU_GoTo(); return false;">Home</a></li>
+      <li><a class="word-count" href="#" onclick="HISTORY_GoTo(); return false;">History</a></li>
+      <li><a class="word-count" href="#" onclick="MISSED_GoTo(); return false;">Missed reminders</a></li>
     </ul>
   </nav>
-  <a class="cta" href="#" onclick="LogOut(); return false;" >Log Out</a>
+  <a class="cta word-count" href="#" onclick="LogOut(); return false;" >Log Out</a>
   <p onclick="openNav()" class="menu cta">Menu</p>
 </div>
 
@@ -17,10 +17,10 @@ const MENU_html_code =
 <div id="mobile__menu" class="overlay">
   <a class="close" onclick="closeNav()">&times;</a>
   <div class="overlay__content">
-    <a class="word-count" href="#" onclick="MENU_GoTo(); return false;">Home</a>
-    <a class="word-count" href="#" onclick="HISTORY_GoTo(); return false;">History</a>
-    <a class="word-count" href="#" onclick="MISSED_GoTo(); return false;" >Missed Reminders</a>
-    <a class="word-count" href="#" onclick="LogOut(); return false;" >Log Out</a>
+    <a href="#" onclick="MENU_GoTo(); return false;">Home</a>
+    <a href="#" onclick="HISTORY_GoTo(); return false;">History</a>
+    <a href="#" onclick="MISSED_GoTo(); return false;" >Missed Reminders</a>
+    <a href="#" onclick="LogOut(); return false;" >Log Out</a>
   </div>
 </div>
 
@@ -38,6 +38,11 @@ const MENU_html_code =
   <footer class="footer">
     <p class="word-count" >Copyright 2020 Constantin Dragancea FMI Unibuc</p>
   </footer>
+
+  <div class="date-info">
+    <p id="user-age" class="word-count">age: 19 years 8 months 13 days 16 hours 14 minutes 59 seconds</p>
+    <p id="time-left-alive" class="word-count">80 years 11 months 13 days 22 hours 38 minutes 41 seconds left alive</p>
+  </div>
 
 </div>`
 
